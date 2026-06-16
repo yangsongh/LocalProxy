@@ -1,0 +1,8 @@
+requests        # 网络请求相关
+pysocks         # 连接Socks5服务器
+wmi             # 磁盘ID
+PyQt5           # 界面
+cryptography    # 加密库
+colorlog        # 彩色控制台输出
+
+pyinstaller

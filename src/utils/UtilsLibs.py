@@ -1,0 +1,266 @@
+# -*- coding: utf-8 -*-
+# @Author : yangsongh
+# @File : UtilsLib.py
+# @Version : 1.0.4
+
+import os
+import re
+import sys
+import json
+import time
+import logging
+import traceback
+import threading
+
+from types import TracebackType
+from typing import Type, Union
+from datetime import datetime
+from logging import DEBUG, INFO, WARNING, ERROR
+
+
+class LoggerManager:
+    logger_lock = threading.Lock()
+
+    def __init__(self, logger_name: Union[str, None] = 'default', file_name: Union[str, None]  = None):
+        self.logger = logging.getLogger(logger_name)
+        self.logger.setLevel(DEBUG)  # 控制日志最低输出等级
+        self.logger.handlers.clear()  # 防止重复输出
+
+        fileFormatStr = '%(asctime)s %(levelname)s %(filename)s:%(lineno)d %(message)s'
+        consoleFormatStr = '%(asctime)s %(filename)s:%(lineno)d-%(funcName)s %(log_color)s%(message)s'
+
+        fileFormatter = logging.Formatter(fileFormatStr)
+        fileHandler = logging.FileHandler(self.get_log_file_path(
+            file_name), mode='a', encoding='utf-8')
+        fileHandler.setFormatter(fileFormatter)
+        fileHandler.setLevel(INFO)  # 文件日志输出等级
+        self.logger.addHandler(fileHandler)
+
+        from colorlog import ColoredFormatter  # type: ignore
+        consoleFormatter = ColoredFormatter(
+            consoleFormatStr,
+            log_colors={
+                'DEBUG': 'blue',
+                'INFO': 'green',
+                'WARNING': 'yellow',
+                'ERROR': 'red'
+            }
+        )
+        consoleHandler = logging.StreamHandler(sys.stdout)
+        consoleHandler.setFormatter(consoleFormatter)
+        consoleHandler.setLevel(DEBUG)  # 控制台日志输出等级
+        self.logger.addHandler(consoleHandler)
+
+    @staticmethod
+    def get_log_file_path(file_name: Union[str, None]  = None) -> str:
+        """获取日志文件路径"""
+        logs_dir = 'logs'
+        os.makedirs(logs_dir, exist_ok=True)
+
+        current_date = datetime.now().strftime('%Y-%m-%d')
+        if file_name:
+            log_file_path = os.path.join(
+                logs_dir, f'{current_date}_{file_name}.log')
+        else:
+            log_file_path = os.path.join(logs_dir, f'{current_date}.log')
+        return log_file_path
+
+    def info(self, message: object) -> None:
+        with self.logger_lock:  # 确保线程安全
+            self.logger.info(message, stacklevel=2)
+
+    def warning(self, message: object) -> None:
+        with self.logger_lock:
+            self.logger.warning(message, stacklevel=2)
+
+    def error(self, message: object, exc_info=None) -> None:
+        with self.logger_lock:
+            self.logger.error(message, exc_info=exc_info, stacklevel=2)
+
+    def debug(self, message: object) -> None:
+        with self.logger_lock:
+            self.logger.debug(message, stacklevel=2)
+
+
+class ConfigManager:
+    def __init__(self, logger: LoggerManager, cfg_file='config.jsonc', deft_cfgs: dict = {}):
+        self.logger = logger
+        self.cfg_file = cfg_file
+        self.deft_cfgs: dict = deft_cfgs
+        self.cfgs = self.deft_cfgs.copy()
+        self.cfg_lock = threading.RLock()
+
+    def load_configs(self) -> bool:
+        """加载配置文件"""
+        with self.cfg_lock:
+            try:
+                # 如果配置文件不存在或为空，恢复默认配置
+                if not os.path.exists(self.cfg_file) or os.path.getsize(self.cfg_file) == 0:
+                    self.logger.warning(f'{self.cfg_file} 不存在或为空，恢复默认配置')
+                    return self.restore_default_config()
+
+                # 读取并清理配置文件
+                with open(self.cfg_file, 'r', encoding='utf-8') as f:
+                    content = re.sub(r'//.*?$|/\*.*?\*/', '',
+                                     f.read(), flags=re.MULTILINE | re.DOTALL)
+
+                # 解析JSON
+                self.cfgs = json.loads(content)
+
+                # 如果解析结果为空，恢复默认配置
+                if not self.cfgs:
+                    self.logger.warning(f'{self.cfg_file} 解析为空，恢复默认配置')
+                    return self.restore_default_config()
+
+                return True
+
+            except (json.JSONDecodeError, Exception) as e:
+                self.logger.error(f'加载配置文件失败: {repr(e)}，恢复默认配置')
+                return self.restore_default_config()
+
+    def save_config(self) -> bool:
+        """保存配置文件"""
+        with self.cfg_lock:
+            try:
+                with open(self.cfg_file, 'w', encoding='utf-8') as f:
+                    json.dump(self.cfgs, f, ensure_ascii=False, indent=4)
+            except:
+                return False
+            return True
+
+    def restore_default_config(self, key_name='') -> bool:
+        """恢复默认配置"""
+        with self.cfg_lock:
+            if key_name:
+                self.cfgs[key_name] = self.deft_cfgs[key_name]
+            else:
+                self.cfgs = self.deft_cfgs  # 恢复整个配置
+
+            return self.save_config()
+
+
+class Utils:
+    @staticmethod
+    def is_package_mode() -> bool:
+        """是否是打包模式 (支持检测PyInstaller和Nuitka)"""
+        return hasattr(sys, 'frozen') or globals().get('__compiled__', False)
+
+    @staticmethod
+    def get_bundle_dir() -> str:
+        """获取程序数据文件夹"""
+        # PyInstaller打包模式
+        if hasattr(sys, 'frozen'):
+            bundle_dir = sys._MEIPASS  # type: ignore
+        # Nuitka打包模式
+        elif globals().get('__compiled__', None):
+            bundle_dir = ''
+        # Python脚本模式
+        else:
+            bundle_dir = os.getcwd()
+        return bundle_dir
+
+    @staticmethod
+    def get_program_path() -> str:
+        """获取程序路径"""
+        return os.path.abspath(sys.argv[0])
+
+    @staticmethod
+    def get_program_dir() -> str:
+        """获取程序所在文件夹"""
+        return os.path.dirname(Utils.get_program_path())
+
+    @staticmethod
+    def setup_except_hook(logger: LoggerManager) -> None:
+        """安装故障处理器"""
+        def handle_exception(exc_type: Type[BaseException], exc_value: BaseException, exc_traceback: TracebackType):
+            """处理未捕获的异常"""
+            stack_summary = []
+            for frame in traceback.extract_tb(exc_traceback):
+                stack_summary.append(
+                    f'文件 {frame.filename}, 行号 {frame.lineno}, 列号 {frame.colno}, 帧名 {frame.name}\n'
+                )
+                if frame.line:
+                    stack_summary.append(f'  {frame.line}')
+                else:
+                    stack_summary.append('(无代码)')
+
+            stack_lines = []
+            for i, frame in enumerate(stack_summary):
+                stack_lines.append(f"  [{i+1}] {frame}")
+            formatted_stack = "\n".join(stack_lines)
+            report = (
+                f'• 异常类型: {exc_type.__name__}\n'
+                f'• 错误信息: {str(exc_value)}\n'
+                f'• 全部堆栈:\n{formatted_stack}'
+            )
+            err_msg = f'程序发生未知错误, 已崩溃\n{report}'
+
+            logger.error(err_msg, exc_info=(
+                exc_type, exc_value, exc_traceback))
+        sys.excepthook = handle_exception
+
+    @staticmethod
+    def debug_memory_usage(logger: LoggerManager) -> None:
+        """日志记录内存占用"""
+        import psutil  # type: ignore
+        mem = psutil.virtual_memory()
+        process = psutil.Process()
+        logger.debug(
+            f'总内存: {round(mem.total/1048576, 2)} MB, '
+            f'可用: {round(mem.available/1048576, 2)} MB, '
+            f'程序占用: {round(process.memory_info().rss/1048576, 2)} MB'
+        )
+
+    @staticmethod
+    def timing_debug_memory_usage(logger: LoggerManager, freq: int = 300) -> None:
+        """定时输出内存使用信息到日志 (默认间隔: 5分钟)"""
+        def _loop():
+            while True:
+                Utils.debug_memory_usage(logger)
+                time.sleep(freq)
+
+        thread = threading.Thread(
+            target=_loop, name='timing_debug_memory_usage', daemon=True)
+        thread.start()
+
+    @staticmethod
+    def sync_work_dir(assets_dir='assets') -> bool:
+        """同步工作目录"""
+        if Utils.is_package_mode():
+            work_dir = Utils.get_program_dir()
+        else:
+            work_dir = os.path.join(os.getcwd(), assets_dir)
+
+        if os.path.exists(work_dir):
+            os.chdir(work_dir)
+            return True
+        return False
+
+    @staticmethod
+    def is_already_running(mutex_name) -> bool:
+        """检查程序是否已经在运行"""
+        from ctypes import windll
+        windll.kernel32.CreateMutexW(None, False, mutex_name)
+        if windll.kernel32.GetLastError() == 183:  # ERROR_ALREADY_EXISTS
+            return True
+        return False
+
+    @staticmethod
+    def qt_setup_high_dpi(logger: LoggerManager) -> bool:
+        """Qt适配高DPI (必须在QApplication注册前执行)"""
+        try:
+            from PyQt5.QtWidgets import QApplication  # type: ignore
+            from PyQt5.QtCore import Qt, QCoreApplication  # type: ignore
+
+            os.putenv('QT_ENABLE_HIGHDPI_SCALING', '1')
+            QApplication.setHighDpiScaleFactorRoundingPolicy(
+                Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
+            QCoreApplication.setAttribute(
+                Qt.ApplicationAttribute.AA_EnableHighDpiScaling)
+            QCoreApplication.setAttribute(
+                Qt.ApplicationAttribute.AA_UseHighDpiPixmaps)
+            logger.debug('已启用自动DPI模式')
+        except Exception as e:
+            logger.error(f'启动自动DPI失败: {repr(e)}')
+            return False
+        return True

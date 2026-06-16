@@ -1,0 +1,59 @@
+2026-06-12 13:27:12,326 INFO Main.py:290 ========== 应用程序启动 (版本号202606111) ==========
+2026-06-12 13:27:12,329 INFO config_manager.py:46 正在尝试从管理员设备拉取最新配置...
+2026-06-12 13:27:12,332 INFO config_manager.py:74 正在尝试从管理员服务器拉取配置: http://172.16.192.1:80/localproxy/get_config?ver=202606111
+2026-06-12 13:27:13,164 INFO config_manager.py:131 配置已加密并保存到本地JSON文件
+2026-06-12 13:27:13,165 INFO config_manager.py:50 配置拉取成功，已更新本地文件。
+2026-06-12 13:27:24,724 INFO config_manager.py:225 设备 AB075Z12403136 密码验证成功
+2026-06-12 13:27:24,725 INFO Main.py:338 设备 AB075Z12403136 密码验证成功，进入程序
+2026-06-12 13:27:24,725 INFO Main.py:358 版本检查 - 当前版本: 202606111, 最新版本: 202606111, 强制更新: True, 自动更新: True
+2026-06-12 13:27:24,731 INFO Main.py:84 初始化主窗口
+2026-06-12 13:27:24,832 INFO Main.py:454 主窗口已显示，应用程序正常运行
+2026-06-12 13:27:24,843 INFO server_scanner.py:229 开始扫描 2 个代理服务器
+2026-06-12 13:27:25,007 INFO server_scanner.py:206 HTTP代理服务器 http://172.16.192.1:8080 可用，响应时间: 161ms
+2026-06-12 13:27:25,010 INFO server_scanner.py:164 SOCKS5代理服务器 172.16.192.1:1080 可用，响应时间: 165ms
+2026-06-12 13:27:25,013 INFO server_scanner.py:245 扫描完成，找到 2 个可用代理服务器
+2026-06-12 13:27:25,020 INFO Main.py:201 扫描结果已填充到表格，共 2 个可用服务器
+2026-06-12 13:27:25,023 INFO Main.py:228 自动扫描到可用服务器，开始自动启动浏览器
+2026-06-12 13:27:25,027 INFO proxy_browser_launcher.py:51 启动浏览器: C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe --proxy-server=http://172.16.192.1:8080 --user-data-dir=C:\Users\adminlcsj\AppData\Roaming/LocalProxyEdgeData http://172.16.192.1:8888
+2026-06-12 13:27:25,060 INFO proxy_browser_launcher.py:54 浏览器启动成功
+2026-06-12 13:27:25,062 INFO Main.py:263 浏览器启动成功: 浏览器已启动。
+2026-06-12 13:28:10,268 INFO Main.py:290 ========== 应用程序启动 (版本号202606111) ==========
+2026-06-12 13:28:10,270 INFO config_manager.py:46 正在尝试从管理员设备拉取最新配置...
+2026-06-12 13:28:10,270 INFO config_manager.py:74 正在尝试从管理员服务器拉取配置: http://172.16.192.1:80/localproxy/get_config?ver=202606111
+2026-06-12 13:28:11,164 INFO config_manager.py:131 配置已加密并保存到本地JSON文件
+2026-06-12 13:28:11,165 INFO config_manager.py:50 配置拉取成功，已更新本地文件。
+2026-06-12 13:28:17,625 INFO Main.py:290 ========== 应用程序启动 (版本号202606111) ==========
+2026-06-12 13:28:17,626 INFO config_manager.py:46 正在尝试从管理员设备拉取最新配置...
+2026-06-12 13:28:17,628 INFO config_manager.py:74 正在尝试从管理员服务器拉取配置: http://172.16.192.1:80/localproxy/get_config?ver=202606111
+2026-06-12 13:28:18,579 INFO config_manager.py:131 配置已加密并保存到本地JSON文件
+2026-06-12 13:28:18,581 INFO config_manager.py:50 配置拉取成功，已更新本地文件。
+2026-06-12 13:28:22,130 INFO Main.py:290 ========== 应用程序启动 (版本号202606111) ==========
+2026-06-12 13:28:22,131 INFO config_manager.py:46 正在尝试从管理员设备拉取最新配置...
+2026-06-12 13:28:22,133 INFO config_manager.py:74 正在尝试从管理员服务器拉取配置: http://172.16.192.1:80/localproxy/get_config?ver=202606111
+2026-06-12 13:28:23,073 INFO config_manager.py:131 配置已加密并保存到本地JSON文件
+2026-06-12 13:28:23,074 INFO config_manager.py:50 配置拉取成功，已更新本地文件。
+2026-06-12 13:28:29,951 INFO Main.py:290 ========== 应用程序启动 (版本号202606111) ==========
+2026-06-12 13:28:29,954 INFO config_manager.py:46 正在尝试从管理员设备拉取最新配置...
+2026-06-12 13:28:29,955 INFO config_manager.py:74 正在尝试从管理员服务器拉取配置: http://172.16.192.1:80/localproxy/get_config?ver=202606111
+2026-06-12 13:28:30,857 INFO config_manager.py:131 配置已加密并保存到本地JSON文件
+2026-06-12 13:28:30,857 INFO config_manager.py:50 配置拉取成功，已更新本地文件。
+2026-06-12 13:28:37,223 INFO config_manager.py:225 设备 AB075Z12403136 密码验证成功
+2026-06-12 13:28:37,224 INFO Main.py:338 设备 AB075Z12403136 密码验证成功，进入程序
+2026-06-12 13:28:37,226 INFO Main.py:358 版本检查 - 当前版本: 202606111, 最新版本: 202606111, 强制更新: True, 自动更新: True
+2026-06-12 13:28:37,231 INFO Main.py:84 初始化主窗口
+2026-06-12 13:28:37,318 INFO Main.py:454 主窗口已显示，应用程序正常运行
+2026-06-12 13:28:37,329 INFO server_scanner.py:229 开始扫描 2 个代理服务器
+2026-06-12 13:28:37,461 INFO server_scanner.py:206 HTTP代理服务器 http://172.16.192.1:8080 可用，响应时间: 124ms
+2026-06-12 13:28:37,464 INFO server_scanner.py:164 SOCKS5代理服务器 172.16.192.1:1080 可用，响应时间: 128ms
+2026-06-12 13:28:37,471 INFO server_scanner.py:245 扫描完成，找到 2 个可用代理服务器
+2026-06-12 13:28:37,483 INFO Main.py:201 扫描结果已填充到表格，共 2 个可用服务器
+2026-06-12 13:28:37,491 INFO Main.py:228 自动扫描到可用服务器，开始自动启动浏览器
+2026-06-12 13:28:37,502 INFO proxy_browser_launcher.py:51 启动浏览器: C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe --proxy-server=http://172.16.192.1:8080 --user-data-dir=C:\Users\adminlcsj\AppData\Roaming/LocalProxyEdgeData http://172.16.192.1:8888
+2026-06-12 13:28:37,554 INFO proxy_browser_launcher.py:54 浏览器启动成功
+2026-06-12 13:28:37,556 INFO Main.py:263 浏览器启动成功: 浏览器已启动。
+2026-06-12 13:29:02,519 INFO proxy_browser_launcher.py:51 启动浏览器: C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe --proxy-server=socks5://172.16.192.1:1080 --user-data-dir=C:\Users\adminlcsj\AppData\Roaming/LocalProxyEdgeData http://172.16.192.1:8888
+2026-06-12 13:29:02,553 INFO proxy_browser_launcher.py:54 浏览器启动成功
+2026-06-12 13:29:02,554 INFO Main.py:263 浏览器启动成功: 浏览器已启动。
+2026-06-12 13:29:08,511 INFO proxy_browser_launcher.py:51 启动浏览器: C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe --proxy-server=http://172.16.192.1:8080 --user-data-dir=C:\Users\adminlcsj\AppData\Roaming/LocalProxyEdgeData http://172.16.192.1:8888
+2026-06-12 13:29:08,545 INFO proxy_browser_launcher.py:54 浏览器启动成功
+2026-06-12 13:29:08,546 INFO Main.py:263 浏览器启动成功: 浏览器已启动。
