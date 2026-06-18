@@ -1,6 +1,6 @@
 ﻿
 #define MyAppName "LocalProxy"
-#define MyAppVersion "202606121"
+#define MyAppVersion "202606171"
 #define MyAppPublisher "Traceless"
 #define MyAppExeName "LocalProxy.exe"
 

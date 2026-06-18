@@ -1,7 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
 
-set "VERSION=202606121"
+set "VERSION=202606171"
 
 set "ISS_FILE_PATH=build_scripts\script.iss"
 set "CLIENT_FILE_PATH=src\config_manager.py"

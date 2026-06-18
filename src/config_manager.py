@@ -12,14 +12,15 @@ from PyQt5.QtWidgets import QInputDialog, QMessageBox, QLineEdit
 # 管理员设备IP地址列表
 ADMIN_IPS = [
     "172.16.192.1",  # 电视盒子
-    "172.16.194.149",  # 备用
-    "172.16.114.21", # 15班
+    "172.16.194.149",  # 13班备用 (管控状态)
+    "172.16.194.91",  # 13班备用 (开网状态)
+    "172.16.114.21",  # 15班
     "localhost"  # 本地开发
 ]
 ADMIN_PORT = 80  # 管理员设备端口
 
 # 程序版本号
-VERSION_CODE = 202606121
+VERSION_CODE = 202606171
 
 
 class ConfigManager:
