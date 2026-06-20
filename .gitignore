@@ -1,0 +1,8 @@
+logs
+desktop.ini
+__pycache__
+.VSCodeCounter
+/assets/config.json
+/build/LocalProxy/
+/build/Updater.exe
+/build/LocalProxySetup.zip
