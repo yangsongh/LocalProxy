@@ -1,6 +1,6 @@
 # LocalProxy - 智能代理工具
 
-[![Version](https://img.shields.io/badge/version-202606171-blue.svg)](https://github.com/yourusername/LocalProxy)
+[![Version](https://img.shields.io/badge/version-202606171-blue.svg)](https://github.com/yangsongh/LocalProxy)
 [![Python](https://img.shields.io/badge/python-3.8+-green.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows-lightgrey.svg)]()
